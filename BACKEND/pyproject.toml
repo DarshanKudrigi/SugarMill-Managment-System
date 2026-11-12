@@ -1,0 +1,29 @@
+[project]
+name = "sugarmill-erp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "kanishkambk43", email = "kanishkambk43@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.20.1",
+    "asyncpg>=0.32.0",
+    "fastapi>=0.162.4",
+    "greenlet>=3.5.6",
+    "httpx>=0.28.1",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
+    "python-dotenv>=1.2.4",
+    "sqlalchemy>=2.0",
+    "typing-extensions>=4.16.0",
+    "uvicorn>=0.54.0",
+]
+
+[project.scripts]
+sugarmill-erp = "sugarmill_erp:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
