@@ -8,6 +8,7 @@ from sugarmill_erp.main import app
 
 
 async def run_tests() -> None:
+    run_id = uuid.uuid4().hex[:8].upper()
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://testserver") as client:
         print("\n=== Testing Root and Health Endpoints ===")
@@ -25,7 +26,7 @@ async def run_tests() -> None:
         # ---------------------------------------------------------
         print("\n=== Testing 1. Customers CRUD ===")
         cust_payload = {
-            "customer_code": "CUST-001",
+            "customer_code": f"CUST-{run_id}",
             "name": "Shree Ganesh Sugar Traders",
             "contact_person": "Ramesh Patil",
             "email": "ramesh@ganeshsugar.com",
@@ -40,7 +41,7 @@ async def run_tests() -> None:
         assert res.status_code == 201, f"Customer create failed: {res.text}"
         cust_data = res.json()
         cust_id = cust_data["id"]
-        assert cust_data["customer_code"] == "CUST-001"
+        assert cust_data["customer_code"] == f"CUST-{run_id}"
         assert cust_data["name"] == "Shree Ganesh Sugar Traders"
         print(f" [PASS] POST /api/v1/customers/ -> 201 Created (ID: {cust_id})")
 
@@ -85,7 +86,7 @@ async def run_tests() -> None:
         # ---------------------------------------------------------
         print("\n=== Testing 2. Farmers CRUD ===")
         farmer_payload = {
-            "farmer_code": "FARM-101",
+            "farmer_code": f"FARM-{run_id}",
             "name": "Balu Vithoba Shinde",
             "father_name": "Vithoba Shinde",
             "phone": "+91 9922110033",
@@ -132,7 +133,7 @@ async def run_tests() -> None:
         # ---------------------------------------------------------
         print("\n=== Testing 3. Inventory Items CRUD ===")
         item_payload = {
-            "item_code": "SUG-M30",
+            "item_code": f"ITEM-{run_id}",
             "name": "Refined Sugar Grade M-30",
             "category": "Finished Goods",
             "unit_of_measure": "Quintals",
@@ -184,7 +185,7 @@ async def run_tests() -> None:
         # ---------------------------------------------------------
         print("\n=== Testing 4. Employees CRUD ===")
         emp_payload = {
-            "employee_code": "EMP-007",
+            "employee_code": f"EMP-{run_id}",
             "first_name": "Anil",
             "last_name": "Kadam",
             "email": "anil.kadam@sugarmill.internal",
@@ -229,7 +230,7 @@ async def run_tests() -> None:
         print("\n=== Testing 5. Invoices CRUD & Foreign Key Integrity ===")
         # Invalid customer_id -> 400
         invalid_inv_payload = {
-            "invoice_number": "INV-2026-0001",
+            "invoice_number": f"INV-{run_id}",
             "customer_id": str(uuid.uuid4()),
             "invoice_date": "2026-11-12",
             "total_amount": "182500.00",
@@ -302,7 +303,7 @@ async def run_tests() -> None:
         print("\n=== Testing 6. Raw Material Receipts CRUD & Foreign Key Integrity ===")
         # Invalid farmer_id -> 400
         invalid_receipt_payload = {
-            "receipt_number": "RMR-2026-0001",
+            "receipt_number": f"RMR-{run_id}",
             "farmer_id": str(uuid.uuid4()),
             "weighed_by_id": emp_id,
             "vehicle_number": "MH-12-AB-1234",

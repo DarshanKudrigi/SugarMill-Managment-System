@@ -216,7 +216,45 @@ Sugar-Mill/
 Interactive Swagger documentation is available at **`http://localhost:8000/docs`**.
 
 ---
+## Backend Testing
 
+The backend includes a standalone CRUD verification script to validate API endpoints and database operations across the major ERP modules.
+
+### Test Coverage
+
+The verification script (`BACKEND/tests/test_crud.py`) checks:
+
+- **Health Checks:** Root and health endpoints, including database connectivity.
+- **Customers:** Create, retrieve, update, list, and delete operations.
+- **Farmers:** CRUD operations for farmer records.
+- **Inventory:** Item creation and CRUD operations.
+- **Employees:** Employee record management.
+- **Invoices:** Invoice creation and CRUD operations.
+- **Raw Material Receipts:** Receipt creation and CRUD operations.
+
+### Running the Tests
+
+Ensure PostgreSQL is running and the backend environment is configured with a valid `DATABASE_URL` in `BACKEND/.env`.
+
+From the backend directory:
+
+```bash
+cd BACKEND
+
+# Install project dependencies
+uv sync
+
+# Install the backend package in editable mode
+uv pip install -e .
+
+# Run the CRUD verification script
+uv run python tests/test_crud.py
+```
+
+The script sends HTTP requests to the FastAPI application and verifies the responses for the covered operations.
+
+**Expected Result:** Successful test execution reports `PASS` for the individual endpoint and CRUD checks.
+---
 ## Getting Started
 
 ### 1. Backend Setup
